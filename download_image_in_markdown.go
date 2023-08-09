@@ -17,7 +17,7 @@ import (
 
 var (
 	markdownPath = flag.String("markdownPath", "", "包含markdown文件的目录")
-	targetPath   = "source/image" // 图片保存的目录
+	imagePath    = "source/image" // 图片保存的目录, 相对于markdownPath
 )
 
 func main() {
@@ -31,13 +31,13 @@ func main() {
 		*markdownPath, _ = os.Getwd()
 	}
 
-	targetPath = path.Join(*markdownPath, targetPath)
+	downloadImageDir := path.Join(*markdownPath, imagePath)
 
 	// 循环处理目录下的所有markdown文件
 	err := filepath.Walk(*markdownPath, func(path string, info os.FileInfo, err error) error {
 		if filepath.Ext(path) == ".md" {
 			log.Printf("INFO: Processing %s\n", path)
-			err := processFile(path, targetPath)
+			err := processFile(path, downloadImageDir)
 			if err != nil {
 				log.Printf("ERROR: %s\n", err)
 			}
@@ -50,10 +50,10 @@ func main() {
 }
 
 // processFile 处理指定的markdown文件
-func processFile(filePath string, destDir string) error {
-	if _, err := os.Stat(destDir); os.IsNotExist(err) {
+func processFile(filePath string, downloadImageDir string) error {
+	if _, err := os.Stat(downloadImageDir); os.IsNotExist(err) {
 		// 创建目录
-		err := os.MkdirAll(destDir, 0755)
+		err := os.MkdirAll(downloadImageDir, 0755)
 		if err != nil {
 			return fmt.Errorf("创建目录失败：%s", err.Error())
 		}
@@ -76,17 +76,17 @@ func processFile(filePath string, destDir string) error {
 
 		// 获取文件名，用于保存到本地目录
 		imageName := filepath.Base(imageURL)
-		destFilePath := filepath.Join(destDir, imageName)
+		imageFilePath := filepath.Join(downloadImageDir, imageName)
 
 		// 下载图片到本地
-		err := downloadImage(imageURL, destFilePath)
+		err := downloadImage(imageURL, imageFilePath)
 		if err != nil {
 			fmt.Printf("下载图片失败：%s\n", err.Error())
 			continue
 		}
 
 		// 替换文档中的图片地址
-		newImageURL := filepath.Join("/source/image", imageName)
+		newImageURL := filepath.Join(imagePath, imageName)
 		// 替换文档内容中的图片地址
 		content = []byte(strings.ReplaceAll(string(content), imageURL, newImageURL))
 	}
