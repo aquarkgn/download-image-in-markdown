@@ -87,10 +87,8 @@ func processFile(filePath string, destDir string) error {
 
 		// 替换文档中的图片地址
 		newImageURL := filepath.Join("/source/image", imageName)
-		//// 将原始的图片URL进行转义，用于正则表达式替换
-		escapedImageURL := regexp.QuoteMeta(imageURL)
-		// 替换文档的内容
-		content = []byte(strings.ReplaceAll(string(content), escapedImageURL, newImageURL))
+		// 替换文档内容中的图片地址
+		content = []byte(strings.ReplaceAll(string(content), imageURL, newImageURL))
 	}
 
 	// 将修改后的内容写回文件
