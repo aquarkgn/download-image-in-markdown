@@ -13,6 +13,8 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 var (
@@ -75,7 +77,7 @@ func processFile(filePath string, downloadImageDir string) error {
 		imageURL := match[1]
 
 		// 获取文件名，用于保存到本地目录
-		imageName := filepath.Base(imageURL)
+		imageName := uuid.New().String()
 		imageFilePath := filepath.Join(downloadImageDir, imageName)
 
 		// 下载图片到本地
