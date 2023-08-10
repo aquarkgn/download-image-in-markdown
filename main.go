@@ -13,8 +13,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-
-	"github.com/google/uuid"
 )
 
 var (
@@ -74,11 +72,19 @@ func processFile(filePath string, downloadImageDir string) error {
 	matches := re.FindAllStringSubmatch(string(content), -1)
 
 	// 下载并替换图片地址
-	for _, match := range matches {
+	for key, match := range matches {
 		imageURL := match[1]
 
+		// 如果图片地址已经处理过，则跳过
+		for i := key - 1; i >= 0; i-- {
+			if matches[i][1] == imageURL {
+				continue
+			}
+		}
+
 		// 获取文件名，用于保存到本地目录
-		imageName := uuid.New().String()
+		imageName := fmt.Sprintf("%s_%d", strings.TrimSuffix(path.Base(filePath), filepath.Ext(filePath)), key)
+
 		// 判断常见图片格式，如果不是常见图片格式则默认为jpeg格式
 		if strings.HasSuffix(imageURL, ".png") {
 			imageName += ".png"
