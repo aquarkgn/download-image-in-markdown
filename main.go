@@ -72,13 +72,14 @@ func processFile(filePath string, downloadImageDir string) error {
 	matches := re.FindAllStringSubmatch(string(content), -1)
 
 	// 下载并替换图片地址
+OuterLoop:
 	for key, match := range matches {
 		imageURL := match[1]
 
 		// 如果图片地址已经处理过，则跳过
 		for i := key - 1; i >= 0; i-- {
 			if matches[i][1] == imageURL {
-				continue
+				break OuterLoop
 			}
 		}
 
