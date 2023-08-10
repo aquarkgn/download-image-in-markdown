@@ -1,5 +1,3 @@
-module download-image-in-markdown
+module github.com/aquarkgn/download-image-in-markdown
 
 go 1.19
-
-require github.com/google/uuid v1.3.0
