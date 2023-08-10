@@ -20,6 +20,7 @@ download-image-in-markdown -markdownPath=/path/to/markdown -rewrite=y
 ## 参数说明：
 download-image-in-markdown
 - markdownPath：markdown文件所在目录，默认为当前目录
+- imagePath : 默认：source/image，markdownPath相对地址
 - rewrite：是否覆盖文档中图片地址，默认:n , 可选项：n/y 不覆盖/覆盖
 
 ## 示例下载图片
