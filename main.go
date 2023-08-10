@@ -16,9 +16,9 @@ import (
 )
 
 var (
-	markdownPath = flag.String("markdownPath", "", "包含markdown文件的目录")
-	imagePath    = flag.String("imagePath", "source/image", "图片下载目录,相对地址,默认为source/image")
-	rewrite      = flag.String("rewrite", "n", "是否替换文档中的图片地址为本地连接")
+	markdownPath = flag.String("markdownPath", "", "markdown文件目录,默认为执行命令的当前目录")
+	imagePath    = flag.String("imagePath", "source/image", "图片下载目录,相对于参数:markdownPath地址")
+	rewrite      = flag.String("rewrite", "n", "y:覆盖原文件,n:不覆盖原文件,默认为n")
 )
 
 func main() {
