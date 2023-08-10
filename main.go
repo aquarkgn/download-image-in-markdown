@@ -79,7 +79,7 @@ OuterLoop:
 		// 如果图片地址已经处理过，则跳过
 		for i := key - 1; i >= 0; i-- {
 			if matches[i][1] == imageURL {
-				break OuterLoop
+				continue OuterLoop
 			}
 		}
 
