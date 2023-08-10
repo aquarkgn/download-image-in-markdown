@@ -76,6 +76,11 @@ OuterLoop:
 	for key, match := range matches {
 		imageURL := match[1]
 
+		// 判断imageURL是否为网络地址
+		if !strings.HasPrefix(imageURL, "http") {
+			continue
+		}
+
 		// 如果图片地址已经处理过，则跳过
 		for i := key - 1; i >= 0; i-- {
 			if matches[i][1] == imageURL {
