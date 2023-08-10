@@ -18,7 +18,7 @@ import (
 var (
 	markdownPath = flag.String("markdownPath", "", "包含markdown文件的目录")
 	rewrite      = flag.String("rewrite", "n", "是否替换文档中的图片地址为本地连接")
-	imagePath    = "source/image" // 图片保存的目录, 相对于markdownPath
+	imagePath    = flag.String("rewrite", "source/image", "图片下载目录,相对地址,默认为source/image")
 )
 
 func main() {
@@ -32,7 +32,7 @@ func main() {
 		*markdownPath, _ = os.Getwd()
 	}
 
-	downloadImageDir := path.Join(*markdownPath, imagePath)
+	downloadImageDir := path.Join(*markdownPath, *imagePath)
 
 	// 循环处理目录下的所有markdown文件
 	err := filepath.Walk(*markdownPath, func(path string, info os.FileInfo, err error) error {
@@ -106,7 +106,7 @@ OuterLoop:
 		}
 
 		// 替换文档中的图片地址
-		newImageURL := filepath.Join(imagePath, imageName)
+		newImageURL := filepath.Join(*imagePath, imageName)
 		// 替换文档内容中的图片地址
 		content = []byte(strings.ReplaceAll(string(content), imageURL, newImageURL))
 	}
