@@ -19,6 +19,7 @@ import (
 
 var (
 	markdownPath = flag.String("markdownPath", "", "包含markdown文件的目录")
+	rewrite      = flag.String("rewrite", "n", "是否替换文档中的图片地址为本地连接")
 	imagePath    = "source/image" // 图片保存的目录, 相对于markdownPath
 )
 
@@ -78,6 +79,16 @@ func processFile(filePath string, downloadImageDir string) error {
 
 		// 获取文件名，用于保存到本地目录
 		imageName := uuid.New().String()
+		// 判断常见图片格式，如果不是常见图片格式则默认为jpeg格式
+		if strings.HasSuffix(imageURL, ".png") {
+			imageName += ".png"
+		} else if strings.HasSuffix(imageURL, ".jpg") {
+			imageName += ".jpg"
+		} else if strings.HasSuffix(imageURL, ".jpeg") {
+			imageName += ".jpeg"
+		} else {
+			imageName += ".jpeg"
+		}
 		imageFilePath := filepath.Join(downloadImageDir, imageName)
 
 		// 下载图片到本地
@@ -94,9 +105,11 @@ func processFile(filePath string, downloadImageDir string) error {
 	}
 
 	// 将修改后的内容写回文件
-	err = ioutil.WriteFile(filePath, content, 0755)
-	if err != nil {
-		return fmt.Errorf("写回文件失败：%s", err.Error())
+	if *rewrite == "y" {
+		err = ioutil.WriteFile(filePath, content, 0755)
+		if err != nil {
+			return fmt.Errorf("写回文件失败：%s", err.Error())
+		}
 	}
 
 	return nil
