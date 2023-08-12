@@ -6,10 +6,10 @@
 
 ```bash
 # 下载命令包
-go get -u github.com/aquarkgn/download-image-in-markdown@latest
+go get -u github.com/aquarkgn/download-image-in-markdown
 
 # 安装命令包
-go install github.com/aquarkgn/download-image-in-markdown@latest
+go install github.com/aquarkgn/download-image-in-markdown
 ```
 
 ## 执行命令
